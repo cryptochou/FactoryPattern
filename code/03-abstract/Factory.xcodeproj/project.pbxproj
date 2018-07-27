@@ -12,7 +12,6 @@
 		6357E30A2109719A00DB52BE /* Pizza.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E3092109719A00DB52BE /* Pizza.swift */; };
 		6357E314210AE99900DB52BE /* BJPizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E313210AE99900DB52BE /* BJPizzaStore.swift */; };
 		6357E316210AE9AC00DB52BE /* CDPizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E315210AE9AC00DB52BE /* CDPizzaStore.swift */; };
-		6357E318210B05C800DB52BE /* DependentPizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E317210B05C800DB52BE /* DependentPizzaStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,7 +33,6 @@
 		6357E3092109719A00DB52BE /* Pizza.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pizza.swift; sourceTree = "<group>"; };
 		6357E313210AE99900DB52BE /* BJPizzaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BJPizzaStore.swift; sourceTree = "<group>"; };
 		6357E315210AE9AC00DB52BE /* CDPizzaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDPizzaStore.swift; sourceTree = "<group>"; };
-		6357E317210B05C800DB52BE /* DependentPizzaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentPizzaStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +70,6 @@
 				6357E3072109713800DB52BE /* PizzaStore.swift */,
 				6357E313210AE99900DB52BE /* BJPizzaStore.swift */,
 				6357E315210AE9AC00DB52BE /* CDPizzaStore.swift */,
-				6357E317210B05C800DB52BE /* DependentPizzaStore.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -134,7 +131,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6357E318210B05C800DB52BE /* DependentPizzaStore.swift in Sources */,
 				6357E314210AE99900DB52BE /* BJPizzaStore.swift in Sources */,
 				6357E3082109713800DB52BE /* PizzaStore.swift in Sources */,
 				6357E316210AE9AC00DB52BE /* CDPizzaStore.swift in Sources */,

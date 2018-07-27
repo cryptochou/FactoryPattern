@@ -1,24 +1,23 @@
 //
-//  SimplePizzaFactory.swift
+//  SCPizzaFactory.swift
 //  Factory
 //
-//  Created by zhouke on 2018/7/26.
+//  Created by zhouke on 2018/7/27.
 //  Copyright © 2018年 zhouke. All rights reserved.
 //
 
 import Cocoa
 
-class SimplePizzaFactory {
-    
+class CDPizzaFactory: SimplePizzaFactory {
     func createPizzaByType(type: String) -> Pizza? {
-        var pizza: Pizza?;
+        var pizza: Pizza?
         
         if type == "cheese" {
-            pizza = CheesePizza()
+            pizza = CDCheesePizza()
         } else if type == "greek" {
-            pizza = GreekPizza();
+            pizza = CDGreekPizza();
         } else if type == "pepperoni" {
-            pizza = PepperoniPizza();
+            pizza = CDPepperoniPizza();
         }
         
         return pizza;

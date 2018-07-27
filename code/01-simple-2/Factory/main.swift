@@ -8,9 +8,11 @@
 
 import Foundation
 
-let bjStore = BJPizzaStore()
+let bjFactory = BJPizzaFactory()
+let bjStore = PizzaStore(factory: bjFactory)
 let bjPizza = bjStore.orderPizza(type: "cheese")
 
-let cdStore = CDPizzaStore()
+let cdFactory = CDPizzaFactory()
+let cdStore = PizzaStore(factory: cdFactory)
 let cdPizza = cdStore.orderPizza(type: "cheese")
 

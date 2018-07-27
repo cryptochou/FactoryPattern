@@ -8,14 +8,17 @@
 
 import Cocoa
 
-protocol PizzaStore {
-    func orderPizza(type: String) -> Pizza?
-    func createPizzaByType(type: String) -> Pizza?
-}
-
-extension PizzaStore {
+class PizzaStore {
+    
+    var factory: SimplePizzaFactory
+    
+    init(factory: SimplePizzaFactory) {
+        self.factory = factory;
+    }
+    
     func orderPizza(type: String) -> Pizza? {
-        let pizza = self.createPizzaByType(type: type)
+        
+        let pizza = self.factory.createPizzaByType(type: type)
         
         pizza?.prepare();
         pizza?.bake();

@@ -30,17 +30,21 @@
 
 首先分析这个需求，抽象出来两个类披萨店和披萨。披萨店有一个方法来提供披萨。
 代码实现。
-定义一个 Pizza 类, 它有 准备 prepare、烘焙 bake、切片 cut、装盒 box 这四个方法。 
+定义一个 Pizza 的抽象类类, 它有 准备 prepare、烘焙 bake、切片 cut、装盒 box 这四个方法。 
 
 ```
-class Pizza {
-    func prepare() { }
-    
-    func bake() { }
-    
-    func cut() { }
-    
-    func box() { }
+protocol Pizza {
+    func prepare()
+    func bake()
+    func cut()
+    func box()
+}
+
+extension Pizza {
+    func prepare() {}
+    func bake() {}
+    func cut() {}
+    func box() {}
 }
 ```
 定义一个 PizzaStore 类， 它有一个提供披萨的方法 orderPizza。
@@ -48,14 +52,14 @@ class Pizza {
 class PizzaStore {
     
     func orderPizza() -> Pizza {
-        let pizza = Pizza();
+        let pizza = Pizza()
         
-        pizza.prepare();
-        pizza.bake();
-        pizza.cut();
-        pizza.box();
+        pizza.prepare()
+        pizza.bake()
+        pizza.cut()
+        pizza.box()
         
-        return pizza;
+        return pizza
     }
 }
 ```
@@ -67,20 +71,20 @@ class PizzaStore {
 class PizzaStore {
     
     func orderPizza(type: String) -> Pizza? {
-        var pizza: Pizza?;
+        var pizza: Pizza?
         
         if type == "cheese" {
             pizza = CheesePizza()
         } else if type == "greek" {
-            pizza = GreekPizza();
+            pizza = GreekPizza()
         } else if type == "pepperoni" {
-            pizza = PepperoniPizza();
+            pizza = PepperoniPizza()
         }
         
-        pizza?.prepare();
-        pizza?.bake();
-        pizza?.cut();
-        pizza?.box();
+        pizza?.prepare()
+        pizza?.bake()
+        pizza?.cut()
+        pizza?.box()
         
         return pizza;
     }
@@ -92,14 +96,14 @@ class PizzaStore {
 class SimplePizzaFactory {
     
     func createPizzaByType(type: String) -> Pizza? {
-        var pizza: Pizza?;
+        var pizza: Pizza?
         
         if type == "cheese" {
             pizza = CheesePizza()
         } else if type == "greek" {
-            pizza = GreekPizza();
+            pizza = GreekPizza()
         } else if type == "pepperoni" {
-            pizza = PepperoniPizza();
+            pizza = PepperoniPizza()
         }
         
         return pizza;
@@ -115,17 +119,17 @@ class PizzaStore {
     var factory: SimplePizzaFactory
     
     init(factory: SimplePizzaFactory) {
-        self.factory = factory;
+        self.factory = factory
     }
     
     func orderPizza(type: String) -> Pizza? {
         
         let pizza = self.factory.createPizzaByType(type: type)
         
-        pizza?.prepare();
-        pizza?.bake();
-        pizza?.cut();
-        pizza?.box();
+        pizza?.prepare()
+        pizza?.bake()
+        pizza?.cut()
+        pizza?.box()
         
         return pizza;
     }
@@ -148,7 +152,7 @@ let pizza = pizzaStore.orderPizza(type: "cheese")
 
 PizzaStore 依赖 factory 依赖 pizza
 
-各种披萨继承自 pizza 类。
+各种披萨继承自 pizza 抽象类。
 
 ### 简单工厂模式角色划分
 - 客户 （上文中的 PizzaStore）：它是使用工厂来创建产品的类。
@@ -156,14 +160,199 @@ PizzaStore 依赖 factory 依赖 pizza
 - 抽象产品角色(如上文中的 Pizza)：简单工厂模式所创建的是所有对象的父类。注意，这里的父类可以是接口也可以是抽象类，它负责描述所创建实例共有的公共接口。
 - 具体产品角色（如上文中的 CheesePizza，GreekPizza，PepperoniPizza）：简单工厂所创建的具体实例对象，这些具体的产品往往都拥有共同的父类。
 
-### 简单工厂模式的优点
-
-工厂类是整个简单工厂模式的关键所在。它包含必要的判断逻辑，能够根据外界给定的信息（配置，或者参数），决定究竟应该创建哪个具体类的对象。用户在使用时可以直接根据工厂类去创建所需的实例，而无需了解这些对象是如何创建以及如何组织的。有利于整个软件体系结构的优化。
-
-### 简单工厂模式缺点
-由于简单工厂模式的产品是基于一个共同的抽象类或者接口，这样一来，产品的种类增加的时候，即有不同的产品接口或者抽象类的时候，工厂类就需要判断何时创建何种接口的产品，这就和创建何种种类的产品相互混淆在了一起，违背了单一职责原则，导致系统丧失灵活性和可维护性。
-
-正如上文提到的，一般情况下简单工厂模式违背了“开放-关闭原则”，因为当我们新增加一个产品的时候必须修改工厂类，相应的工厂类就需要重新编译一遍。但这一点可以利用反射在一定程度上解决（比如通过传入类名来区分不同的类型，然后根据类名创建对应的对象）。
-
 ## 工厂方法模式
+
+回到刚才披萨店的例子，由于经营的很好，披萨店要扩大规模了。然后需要开两家分店。比如北京分店和成都分店。既然是分店，为了确保披萨的质量和品牌效应肯定需要使用之前经过时间考验的代码。但是由于地域的差异每个分店想要提供不同的风味的披萨（比如成都的分店少不了的变态辣口味的需求）。
+
+### 简单工厂的做法
+
+结合上面的简单工厂我们可以创建两种不同的工厂，把上面的 SimplePizzaFactory 抽象成接口，然后定义 BJPizzaFactory、CDPizzaFactory 实现接口。这时候通过创建不同的工厂然后创建不同的 PizzaStore ，然后调用 PizzaStore 的 orderPizza 来根据不同的工厂来实现提供不同风味披萨的需求。
+
+```
+protocol SimplePizzaFactory {
+    func createPizzaByType(type: String) -> Pizza? 
+}
+```
+
+```
+let bjFactory = BJPizzaFactory()
+let bjStore = PizzaStore(factory: bjFactory)
+let bjPizza = bjStore.orderPizza(type: "cheese")
+
+let cdFactory = CDPizzaFactory()
+let cdStore = PizzaStore(factory: cdFactory)
+let cdPizza = cdStore.orderPizza(type: "cheese")
+```
+
+类图
+![](./images/factory-pattern-5.png)
+
+
+- PizzaStore 依赖 SimplePizzaFactory 和 Pizza
+- BJPizzaFactory、CDPizzaFactory 实现了 SimplePizzaFactory 接口
+- 各类的 pizza 继承自抽象类 pizza
+- 各个工厂依赖于各个类型的 pizza
+
+### 另一种做法
+
+首先改造 PizzaStore 使它成为一个抽象类。
+
+```
+protocol PizzaStore {
+    func orderPizza(type: String) -> Pizza?
+    func createPizzaByType(type: String) -> Pizza?
+}
+
+extension PizzaStore {
+    func orderPizza(type: String) -> Pizza? {
+        let pizza = self.createPizzaByType(type: type)
+        
+        pizza?.prepare()
+        pizza?.bake()
+        pizza?.cut()
+        pizza?.box()
+        
+        return pizza;
+    }
+}
+```
+
+可以看出跟上面简单工厂不同的就是把之前放到 工厂类里面的创建方法放回了 PizzaStore 但是声明为抽象方法。接着每个区域类型的店铺都继承自该抽象类。然后实现抽象方法。这样以来如何制造披萨就由每个子类自己来控制。
+
+```
+class BJPizzaStore: PizzaStore {
+    func createPizzaByType(type: String) -> Pizza? {
+        var pizza: Pizza?
+        
+        if type == "cheese" {
+            pizza = BJCheesePizza()
+        } else if type == "greek" {
+            pizza = BJGreekPizza()
+        } else if type == "pepperoni" {
+            pizza = BJPepperoniPizza()
+        }
+        
+        return pizza;
+    }
+}
+```
+
+使用的时候只用创建不同的披萨店，然后使用它的 orderPizza 方法就能获得披萨对象。
+```
+let bjStore = BJPizzaStore()
+let bjPizza = bjStore.orderPizza(type: "cheese")
+
+let cdStore = CDPizzaStore()
+let cdPizza = cdStore.orderPizza(type: "cheese")
+```
+
+类图
+![](./images/factory-pattern-6.png)
+
+- 抽象类 PizzaStore 依赖 pizza 抽象类
+- BJPizzaStore、CDPizzaStore 继承自 PizzaStore
+- BJPizzaStore、CDPizzaStore 依赖 具体 pizza 类
+- 各类的 pizza 继承自抽象类 pizza
+
+
+### 声明一个工厂方法
+在简单工厂里面通过一个对象负责所有具体类的实例化，现在经过修改变成了由一群子类来负责实例化。
+
+我们再来看一下
+
+```
+protocol PizzaStore {
+    func orderPizza(type: String) -> Pizza?
+    func createPizzaByType(type: String) -> Pizza?
+}
+
+extension PizzaStore {
+    func orderPizza(type: String) -> Pizza? {
+        let pizza = self.createPizzaByType(type: type)
+        
+        pizza?.prepare()
+        pizza?.bake()
+        pizza?.cut()
+        pizza?.box()
+        
+        return pizza;
+    }
+}
+```
+可以看出来实例化披萨的责任被转移到了一个方法中，这个方法就如同一个工厂。以此这个方法称为工厂方法。
+
+工厂方法用来处理对象的创建，并将这些创建的行为封装在子类中。这样以来客户程序中父类的代码就跟子类的创建代码解耦了。
+
+## 工厂方法模式的定义
+一个抽象类定义了一个创建对象的接口，但是由子类决定要实例化的具体类是哪个。这个所谓的决定并不是说子类在运行时决定，而是说在编写创建者类的时候，选择了哪个子类自然就决定了实际创建的产品是什么了。
+
+### 角色
+- 客户 （抽象类 PizzaStore）：与简单工厂一样它不负责创建对象。
+- 工厂角色（具体类 BJPizzaStore、CDPizzaStore）： PizzaStore 的子类通过重写父类的 createPizzaByType 方法来确定自己的实现代码，用来创建自己风味的披萨。
+- 抽象产品角色( Pizza)：与简单工厂模式一样它是所有要创建对象的父类。注意，这里的父类可以是接口也可以是抽象类，它负责描述所创建实例共有的公共接口。
+- 具体产品角色（如上文中的 BJCheesePizza，CDCheesePizza）
+
+### 依赖倒置原则
+
+依赖倒置是设计模式中一个设计原则，工厂模式很好的体现了这个原则。然后要理解这个原则要先了解什么是依赖。个人认为所谓的依赖就是当你在某个类中使用到另外的类，二者就产生了依赖关系。
+
+然后来看一下不使用工厂模式的时候我们创建披萨的代码。
+
+```
+class DependentPizzaStore {
+    func orderPizza(style: String, type: String) -> Pizza? {
+        var pizza: Pizza?
+        if style == "BJ" {
+            if type == "cheese" {
+                pizza = BJCheesePizza()
+            } else if type == "greek" {
+                pizza = BJGreekPizza();
+            } else if type == "pepperoni" {
+                pizza = BJPepperoniPizza();
+            }
+        } else if style == "CD" {
+            if type == "cheese" {
+                pizza = CDCheesePizza()
+            } else if type == "greek" {
+                pizza = CDGreekPizza();
+            } else if type == "pepperoni" {
+                pizza = CDPepperoniPizza();
+            }
+        }
+        
+        pizza?.prepare();
+        pizza?.bake();
+        pizza?.cut();
+        pizza?.box();
+        
+        return pizza;
+    }
+}
+```
+
+简单来说就是根据style 和type 来创建不同披萨。然后对披萨做一些处理。
+
+类图
+![](./images/factory-pattern-7.png)
+
+这个版本的 pizzastore 依赖于所有的披萨对象，因为它直接创建这些披萨对象。
+每新增一个披萨类型就相当于让 pizzastore 多了一个依赖
+如果这些披萨的实现改变了就必须修改 pizzastore
+
+这些就是依赖的坏处，代码中减少对具体类的依赖是件好事。
+
+然后我们看一下使用了工厂方法模式之后 pizzastore 的依赖关系。（删除了与pizzastore 无依赖的部分）
+
+![](./images/factory-pattern-8.png)
+
+这个版本的 pizzastore 依赖于抽象类 pizza 
+各种具体的披萨类也依赖于抽象类 pizza
+这样以来高层组件（pizzastore）和低层组件（各类披萨）都依赖了 抽象类 pizza。
+
+通过对比我们可以看到没使用工厂方法的依赖是由上而下的即高层组件依赖低层组件
+使用工厂方法之后依赖关系倒置了，高层组件不再依赖低层组件，只依赖抽象类。
+
+## 抽象工厂模式
+
+
 
