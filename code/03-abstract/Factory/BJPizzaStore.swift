@@ -11,13 +11,14 @@ import Cocoa
 class BJPizzaStore: PizzaStore {
     func createPizzaByType(type: String) -> Pizza? {
         var pizza: Pizza?
+        let ingredientFactory = BJPizzaIngredientFactory()
         
         if type == "cheese" {
-            pizza = BJCheesePizza()
-        } else if type == "greek" {
-            pizza = BJGreekPizza();
+            pizza = CheesePizza(ingredientFactory: ingredientFactory)
+            pizza!.name = "北京起司披萨"
         } else if type == "pepperoni" {
-            pizza = BJPepperoniPizza();
+            pizza = PepperoniPizza(ingredientFactory: ingredientFactory);
+            pizza!.name = "北京烤香肠披萨"
         }
         
         return pizza;

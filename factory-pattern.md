@@ -354,5 +354,199 @@ class DependentPizzaStore {
 
 ## 抽象工厂模式
 
+再次回到披萨店的例子里，披萨店成功的关键在于新鲜高质量的原料，但是会有一些分店使用廉价的原料来增加利润，为了维护披萨店的品牌我们需要采取一些手段。
 
+最直接的做法就是由总部提供各种原料并运送到各家加盟店。但是由于地理位置较远以及各个地区口味不同原料也可能存在一些微小的差别。因此我们进行下面的设计。
+
+### 添加原料类
+
+```
+class Cheese {
+    
+}
+
+class BJCheese: Cheese{
+    
+}
+
+class CDCheese: Cheese {
+    
+}
+```
+
+```
+class Pepperoni {
+    
+}
+
+class BJPepperoni: Pepperoni {
+    
+}
+
+class CDPepperoni: Pepperoni {
+    
+}
+```
+
+### 添加原料工厂
+
+通过原料工厂来创建原料家族中的每个原料。
+
+首先定义一个接口，其中定义了每种原料对应的创建方法。
+```
+protocol PizzaIngredientFactory {
+    func creatCheese() -> Cheese
+    func creatPepperoni() -> Pepperoni
+}
+```
+
+然后为每个区域的分店创建实现上面接口的类来实现创建方法。
+
+```
+class BJPizzaIngredientFactory: PizzaIngredientFactory {
+    func creatCheese() -> Cheese {
+        return BJCheese()
+    }
+    
+    func creatPepperoni() -> Pepperoni {
+        return BJPepperoni()
+    }
+}
+
+```
+```
+class CDPizzaIngredientFactory: PizzaIngredientFactory {
+    func creatCheese() -> Cheese {
+        return CDCheese()
+    }
+    
+    func creatPepperoni() -> Pepperoni {
+        return CDPepperoni()
+    }
+}
+```
+
+然后修改 Pizza 类,主要就是为其添加各种原料的属性并抽象化 prepare 方法。prepare 方法里会添加各种来自于原料工厂的原料。
+
+需要注意的还有 ingredientFactory 这个属性，它是为制作披萨提供原料的，每个 Pizza 都需要在初始化方法中得到一个工厂存储在属性中。
+
+```
+class Pizza {
+    var name: String = ""
+    var cheese: Cheese?
+    var pepperoni: Pepperoni?
+    
+    var ingredientFactory: PizzaIngredientFactory
+
+    init(ingredientFactory: PizzaIngredientFactory) {
+        self.ingredientFactory = ingredientFactory
+    }
+    
+    // swift 中没有抽象方法这个概念。因此在这添加断言，子类不复写就会报错
+    func prepare() {
+        assert(true, "Pizza 子类必须重写 prepare 方法")
+    }
+    
+    func bake() {
+        print("350 度下烘烤 25 分钟...")
+    }
+    func cut() {
+        print("切片...")
+    }
+    func box() {
+        print("装盒...")
+    }
+}
+```
+
+接着由于披萨的口味由原料来决定，我们在这里不需要像工厂方法模式里那样创建各个地区对应的披萨了。让原料工厂来处理地区差异就行了。
+
+```
+class CheesePizza: Pizza {
+    override func prepare() {
+        print("Preparing " + name)
+        self.cheese = self.ingredientFactory.creatCheese()
+    }
+}
+
+class PepperoniPizza: Pizza {
+    override func prepare() {
+        print("Preparing " + name)
+        self.pepperoni = self.ingredientFactory.creatPepperoni()
+    }
+}
+```
+
+通过上面这一步 Pizza 类不需要关心原料的问题了，只需要关注披萨的制作等问题，这样一来 Pizza 和区域原料之间就解耦了。
+
+回到披萨店，我们需要让他们与本地的原料工厂连接上关系。
+
+```
+class BJPizzaStore: PizzaStore {
+    func createPizzaByType(type: String) -> Pizza? {
+        var pizza: Pizza?
+        let ingredientFactory = BJPizzaIngredientFactory()
+        
+        if type == "cheese" {
+            pizza = CheesePizza(ingredientFactory: ingredientFactory)
+            pizza!.name = "北京起司披萨"
+        } else if type == "pepperoni" {
+            pizza = PepperoniPizza(ingredientFactory: ingredientFactory);
+            pizza!.name = "北京烤香肠披萨"
+        }
+        
+        return pizza;
+    }
+}
+```
+
+```
+class CDPizzaStore: PizzaStore {
+    func createPizzaByType(type: String) -> Pizza? {
+        var pizza: Pizza?
+        let ingredientFactory = CDPizzaIngredientFactory()
+        
+        if type == "cheese" {
+            pizza = CheesePizza(ingredientFactory: ingredientFactory)
+            pizza!.name = "成都起司披萨"
+        } else if type == "pepperoni" {
+            pizza = PepperoniPizza(ingredientFactory: ingredientFactory);
+            pizza!.name = "成都烤香肠披萨"
+        }
+        
+        return pizza;
+    }
+}
+```
+
+经过上面的改造之后我们提供披萨的方法并不需要修改
+
+```
+let bjStore = BJPizzaStore()
+let bjPizza = bjStore.orderPizza(type: "cheese")
+
+let cdStore = CDPizzaStore()
+let cdPizza = cdStore.orderPizza(type: "cheese")
+```
+
+类图
+![](./images/factory-pattern-9.png)
+
+由于全部的类图太多负责，这里只列出抽象工厂相关的类。
+抽象工厂类 PizzaIngredientFactory 与各个原料的抽象类并不产生依赖关系
+具体工厂类 BJPizzaIngredientFactory、CDPizzaIngredientFactory 依赖于各自对应的具体原料类 
+
+### 抽象工厂定义
+
+抽象工厂提供一系列创建多个抽象产品的接口，所有的具体的工厂都必须实现这些接口来生产产品。客户中的代码只涉及抽象工厂，具体运行时会自动使用具体工厂。
+抽象工厂模式与工厂方法模式最大的区别在于抽象工厂中每个工厂可以创建多个种类的产品。
+
+### 抽象工厂模式角色划分
+抽象产品（或者产品接口），如上文类图中的 Cheese，Pepperoni
+具体产品，如 BJPepperoni， CDPepperoni 等
+抽象工厂（或者工厂接口），如 PizzaIngredientFactory
+具体工厂，如BJPizzaIngredientFactory，BJPizzaIngredientFactory、CDPizzaIngredientFactory
+
+### 优点
+ 抽象工厂模式隔离了具体类的生成，使得客户并不需要知道什么被创建。由于这种隔离，更换一个具体工厂就变得相对容易。所有的具体工厂都实现了抽象工厂中定义的那些公共接口，因此只需改变具体工厂的实例，就可以在某种程度上改变整个软件系统的行为。另外，应用抽象工厂模式可以实现高内聚低耦合的设计目的，因此抽象工厂模式得到了广泛的应用。
 

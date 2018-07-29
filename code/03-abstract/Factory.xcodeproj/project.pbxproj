@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630DEC99210DC9CF00A9945D /* Cheese.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DEC98210DC9CF00A9945D /* Cheese.swift */; };
+		630DEC9B210DCA5F00A9945D /* Pepperoni.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DEC9A210DCA5F00A9945D /* Pepperoni.swift */; };
+		630DEC9D210DCAF400A9945D /* PizzaIngredientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630DEC9C210DCAF400A9945D /* PizzaIngredientFactory.swift */; };
 		6357E30121096FEC00DB52BE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E30021096FEC00DB52BE /* main.swift */; };
 		6357E3082109713800DB52BE /* PizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E3072109713800DB52BE /* PizzaStore.swift */; };
 		6357E30A2109719A00DB52BE /* Pizza.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6357E3092109719A00DB52BE /* Pizza.swift */; };
@@ -27,6 +30,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		630DEC98210DC9CF00A9945D /* Cheese.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cheese.swift; sourceTree = "<group>"; };
+		630DEC9A210DCA5F00A9945D /* Pepperoni.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pepperoni.swift; sourceTree = "<group>"; };
+		630DEC9C210DCAF400A9945D /* PizzaIngredientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaIngredientFactory.swift; sourceTree = "<group>"; };
 		6357E2FD21096FEC00DB52BE /* Factory */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Factory; sourceTree = BUILT_PRODUCTS_DIR; };
 		6357E30021096FEC00DB52BE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		6357E3072109713800DB52BE /* PizzaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaStore.swift; sourceTree = "<group>"; };
@@ -70,6 +76,9 @@
 				6357E3072109713800DB52BE /* PizzaStore.swift */,
 				6357E313210AE99900DB52BE /* BJPizzaStore.swift */,
 				6357E315210AE9AC00DB52BE /* CDPizzaStore.swift */,
+				630DEC98210DC9CF00A9945D /* Cheese.swift */,
+				630DEC9A210DCA5F00A9945D /* Pepperoni.swift */,
+				630DEC9C210DCAF400A9945D /* PizzaIngredientFactory.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -132,9 +141,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6357E314210AE99900DB52BE /* BJPizzaStore.swift in Sources */,
+				630DEC9B210DCA5F00A9945D /* Pepperoni.swift in Sources */,
 				6357E3082109713800DB52BE /* PizzaStore.swift in Sources */,
+				630DEC99210DC9CF00A9945D /* Cheese.swift in Sources */,
 				6357E316210AE9AC00DB52BE /* CDPizzaStore.swift in Sources */,
 				6357E30121096FEC00DB52BE /* main.swift in Sources */,
+				630DEC9D210DCAF400A9945D /* PizzaIngredientFactory.swift in Sources */,
 				6357E30A2109719A00DB52BE /* Pizza.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,9 +270,11 @@
 		6357E30521096FEC00DB52BE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7S7X7B8PE5;
+				DEVELOPMENT_TEAM = 3MS487J3N7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -268,9 +282,11 @@
 		6357E30621096FEC00DB52BE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7S7X7B8PE5;
+				DEVELOPMENT_TEAM = 3MS487J3N7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
