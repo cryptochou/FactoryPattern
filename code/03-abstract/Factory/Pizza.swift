@@ -37,14 +37,14 @@ class Pizza {
 class CheesePizza: Pizza {
     override func prepare() {
         print("Preparing " + name)
-        self.cheese = self.ingredientFactory.creatCheese()
+        self.cheese = self.ingredientFactory.createCheese()
     }
 }
 
 class PepperoniPizza: Pizza {
     override func prepare() {
         print("Preparing " + name)
-        self.pepperoni = self.ingredientFactory.creatPepperoni()
+        self.pepperoni = self.ingredientFactory.createPepperoni()
     }
 }
 
