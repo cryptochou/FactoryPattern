@@ -370,17 +370,15 @@ class DependentPizzaStore {
 
 最直接的做法就是由总部提供各种原料并运送到各家加盟店。但是由于地理位置较远以及各个地区口味不同原料也可能存在一些微小的差别。因此我们进行下面的设计。
 
-### 添加原料类族
+### 添加原料类族
 
 ```
 class Cheese {
     
 }
-
 class BJCheese: Cheese{
     
 }
-
 class CDCheese: Cheese {
     
 }
@@ -390,11 +388,9 @@ class CDCheese: Cheese {
 class Pepperoni {
     
 }
-
 class BJPepperoni: Pepperoni {
     
 }
-
 class CDPepperoni: Pepperoni {
     
 }
