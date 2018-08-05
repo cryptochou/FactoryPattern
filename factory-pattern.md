@@ -163,7 +163,7 @@ let pizza = pizzaStore.orderPizza(type: "cheese")
 ![](./images/factory-pattern-4.png)
 
 PizzaStore ~~依赖 factory~~ 依赖 pizza
-(更正，PizzaStore)
+(更正，PizzaStore 与 factory 是关联关系，应该是实线)
 各种披萨继承自 pizza 抽象类。
 
 
