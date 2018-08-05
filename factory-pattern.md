@@ -162,9 +162,10 @@ let pizza = pizzaStore.orderPizza(type: "cheese")
 类图
 ![](./images/factory-pattern-4.png)
 
-PizzaStore 依赖 factory 依赖 pizza
-
+PizzaStore ~~依赖 factory~~ 依赖 pizza
+(更正，PizzaStore)
 各种披萨继承自 pizza 抽象类。
+
 
 ### 简单工厂模式角色划分
 - 客户 （上文中的 PizzaStore）：它是使用工厂来创建产品的类。
